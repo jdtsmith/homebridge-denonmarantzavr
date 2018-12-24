@@ -13,35 +13,35 @@ class AVRAccessory {
 
     config.zones=config.zones || 1;
     if(!config.ip) {
-      this.log.warn(this.name: ': no ip configured for connection, aborting.');
+      this.log.warn(this.name+': no ip configured for connection, aborting.');
       return;
     }
     config.model=config.model || 'DENON-LIKE AVR';
     this.config = config;
-    
+    this._services = this.createServices();
+
     // Initiate the connection
     var client = new net.Socket();
     client.setKeepAlive(true);
     client.connect(PORT,config.ip)
 
     client.on('connect', () => {
-      this._services = this.createServices();
       if(this.switches) 
-	Object.keys(this.switches).forEach(zone => queryZone(zone));
+	Object.keys(this.switches).forEach(zone => this.queryZone(zone));
     });
     
     client.on('error',error => {
-      this.log.warn(`Error connecting to ${config.ip}: `,error);
+      this.log.warn(`${thisname} - Error connecting to ${config.ip}: `,error);
     });
     
     client.on('data', data => {
+      data=data.toString();
       var match=data.match(/^(Z[M234])(ON|OFF)/);
       if (match && match.length>1) {
-	this.log('Got matching status: ',data.trim());
+	this.log(this.name+' - Got matching status: ',data.trim());
 	this.updateZone(match[1],match[2]);
       }
     });
-    
     this.client=client;
   }
 
@@ -68,30 +68,28 @@ class AVRAccessory {
 
   getSwitchServices() {
     this.switches={};
-    for(i=1;i<=this.config.zones;i++) {
+    for(var i=1;i<=this.config.zones;i++) {
       let zone= 'Z' + (i==1?'M':i);
-      let name=this.name;
-      if (i>1) name+=`(${zone})`;
-      let sw=new Service.Switch(name);
+      let sw=new Service.Switch(this.name,zone);
       
       sw.getCharacteristic(Characteristic.On)
-	.on('get', this.getStatus.bind(this,zone));
+	.on('get', this.getStatus.bind(this,zone))
       	.on('set', this.setStatus.bind(this,zone));
     
-      this.switches[zone]=sw;
+      this.switches[zone]={"service":sw};
     }
-    return this.switches;
+    return Object.values(this.switches).map(x=>x.service);
   }
 
   getStatus(zone,callback) {
-    if(!this.switch[zone]) {
+    if(!this.switches[zone]) {
       callback(new Error(`No such zone: ${zone}`));
     } 
-    callback(null,this.status[zone]);
+    callback(null,this.switches[zone].status);
   }
 
   setStatus(zone,status,callback) {
-    if(!this.switch[zone]) {
+    if(!this.switches[zone]) {
       callback(new Error(`No such zone: ${zone}`));
       return;
     } 
@@ -104,10 +102,12 @@ class AVRAccessory {
   }
 
   updateZone(zone,status,callback) {
-    if(this.switch[zone]) {
-      this.status[zone] = status=='ON';
-      this.switch[zone].getCharacteristic(Characteristic.On).
-	updateValue(this.status[zone]);
+    if(this.switches[zone]) {
+      this.switches[zone].status = status=='ON';
+      this.switches[zone].service.getCharacteristic(Characteristic.On).
+	updateValue(this.switches[zone].status);
     }
   }
 }
+
+module.exports = AVRAccessory;
