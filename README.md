@@ -22,6 +22,10 @@ An example platform configuration stanza:
 		  "ip": "192.168.0.100",
           "model": "DenonX1400H",
 		  "zones": 2
+		  "zonenames": [
+			  "Den",
+			  "Patio"
+	      ]
         },
 	    {
           "name": "KitchenAVR",
@@ -41,6 +45,8 @@ where:
 - `ip`: Its (fixed) IP address (try configuring in your router).
 - `model`  (Optional): Model name (defaults to "DENON-LIKE AVR").
 - `zones` (Optional): The number of zones to create HomeKit switches for.  Defaults to 1 (main zone only).  A maximum of 4 zones supported (depending on AVR model). 
+- `zonenames` (Optional): Names to give the zones, in order (main, Zone 2, ...).  Defaults to `name`, `name(Z2)`, etc.
+
 
 ## How it works
 This works by opening a persistent socket connection to poert 23 (aka telnet port) on the AVR.  Since any external changes to state will be reported over this connection, no polling is required.  This makes status updates nearly instantaneous. 

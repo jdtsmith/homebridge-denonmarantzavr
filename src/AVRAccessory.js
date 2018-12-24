@@ -35,11 +35,14 @@ class AVRAccessory {
     });
     
     client.on('data', data => {
-      data=data.toString();
+      data=data.toString().trim();
       var match=data.match(/^(Z[M234])(ON|OFF)/);
       if (match && match.length>1) {
-	this.log(this.name+' - Got matching status: ',data.trim());
+	this.log(this.name+' - Status: ',data);
 	this.updateZone(match[1],match[2]);
+      } else if (data=='PWSTANDBY') {
+	this.log(this.name+' - Standing-by all Zones');
+	Object.keys(this.switches).map(x=>this.updateZone(x,'OFF'));
       }
     });
     this.client=client;
@@ -69,8 +72,14 @@ class AVRAccessory {
   getSwitchServices() {
     this.switches={};
     for(var i=1;i<=this.config.zones;i++) {
-      let zone= 'Z' + (i==1?'M':i);
-      let sw=new Service.Switch(this.name,zone);
+      let name,	zone= 'Z' + (i==1?'M':i);
+      if(this.config.zonenames && this.config.zonenames[i-1]) {
+	name=this.config.zonenames[i-1];
+      } else {
+	name=this.name;
+	if (i>1) name+=`(${zone})`;
+      }
+      let sw=new Service.Switch(name,zone);
       
       sw.getCharacteristic(Characteristic.On)
 	.on('get', this.getStatus.bind(this,zone))
@@ -101,7 +110,7 @@ class AVRAccessory {
     this.client.write(zone + '?\r');
   }
 
-  updateZone(zone,status,callback) {
+  updateZone(zone,status) {
     if(this.switches[zone]) {
       this.switches[zone].status = status=='ON';
       this.switches[zone].service.getCharacteristic(Characteristic.On).
