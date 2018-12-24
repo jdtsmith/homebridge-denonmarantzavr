@@ -1,0 +1,26 @@
+{
+  "name": "homebridge-denonmarantzavr",
+  "version": "0.1.0",
+  "description": "Homebridge plugin for Denon/Marantz AVRs",
+  "main": "src/index.js",
+  "keywords": [
+    "homebridge",
+    "homebridge-plugin",
+    "denon",
+    "marantz",
+    "avr"
+  ],
+  "author": "JD Smith",
+  "license": "MIT",
+  "engines": {
+    "node": ">=8.9.3",
+    "homebridge": ">=0.4.36"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jdtsmith/homebridge-denonmarantzavr.git"
+  },
+  "bugs": {
+    "url": "http://github.com/jdtsmith/homebridge-denonmarantzavr/issues"
+  }
+}
