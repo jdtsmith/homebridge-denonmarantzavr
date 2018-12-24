@@ -22,7 +22,13 @@ An example platform configuration stanza:
 		  "ip": "192.168.0.100",
           "model": "DenonX1400H",
 		  "zones": 2
+        },
+	    {
+          "name": "KitchenAVR",
+		  "ip": "192.168.0.101",
+          "model": "DenonX4400H",
         }
+
       ]
     }
   ]
@@ -32,30 +38,30 @@ An example platform configuration stanza:
 where:
 
 - `name`: The name of the AVR to control.
-- `ip`: It's (fixed) IP address (try configuring in your router).
-- `model`  (Optional): Model name (defaults to "DENON-LIKE AVR")
-- `zones` (Optional): The number of zones to create switches for.  Defaults to 1 (main zone only).  Maximum 4 zones supported (depending on AVR model). 
+- `ip`: Its (fixed) IP address (try configuring in your router).
+- `model`  (Optional): Model name (defaults to "DENON-LIKE AVR").
+- `zones` (Optional): The number of zones to create HomeKit switches for.  Defaults to 1 (main zone only).  A maximum of 4 zones supported (depending on AVR model). 
 
 ## Contributions
 
-I'll accept pull requests for enhancements, additional commands etc.  A very useful spreadsheet reference for the commands accepted on port 23 by recent-ish Denon/Marantz AVRs is [available here](https://docs.google.com/spreadsheets/d/1q-yIyWZQarDX_Xe3DG_ZvU_I1Lkv2WnkNw_YT14AJXE/edit?usp=sharing).  It's easy to play around with commands like:
+I'll accept pull requests for enhancements, additional commands etc.  A very useful spreadsheet reference for the commands accepted on port 23 by recent-ish Denon/Marantz AVRs is [available here](https://docs.google.com/spreadsheets/d/1q-yIyWZQarDX_Xe3DG_ZvU_I1Lkv2WnkNw_YT14AJXE/edit?usp=sharing).  It's easy to play around with commands on your AVR like:
 
 ```
 % nc 192.168.0.10 23
 ```
 
-(replace with your AVR's IP address). 
+(replace with your AVR's IP address).  If you don't have `nc`, you can try `telnet`.
 
 Some items TBD:
 
-- Add (optional) support for multi-zone volume control (trivial command-wise, but the Speaker accessory is not supported in Home, so requires lightbulb or fan psuedo-accessory). 
+- Add (optional) support for multi-zone volume control (trivial command-wise, but the `Speaker` accessory is not supported in Home, so requires lightbulb or fan psuedo-accessory). 
 - Add other commands, e.g. for changing inputs, surround mode, etc. 
 
 ## License
 
 MIT License
 
-Copyright (c) 2017 J.D. Smith
+Copyright (c) 2018 J.D. Smith
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
