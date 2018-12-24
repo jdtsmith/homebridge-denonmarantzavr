@@ -21,7 +21,7 @@ An example platform configuration stanza:
         "name": "DenAVR",
         "ip": "192.168.0.100",
         "model": "DenonX1400H",
-        "zones": 2
+        "zones": 2,
         "zonenames": [
           "Den",
           "Patio"
