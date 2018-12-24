@@ -13,29 +13,28 @@ After [Homebridge](https://github.com/nfarina/homebridge) has been installed:
 An example platform configuration stanza:
 
 ```json
-  "platforms": [
-    {
-      "platform": "DenonMarantzAVR",
-      "avrs": [
-        {
-          "name": "DenAVR",
-		  "ip": "192.168.0.100",
-          "model": "DenonX1400H",
-		  "zones": 2
-		  "zonenames": [
-			  "Den",
-			  "Patio"
-	      ]
-        },
-	    {
-          "name": "KitchenAVR",
-		  "ip": "192.168.0.101",
-          "model": "DenonX4400H"
-        }
-
-      ]
-    }
-  ]
+"platforms": [
+  {
+    "platform": "DenonMarantzAVR",
+    "avrs": [
+      {
+        "name": "DenAVR",
+        "ip": "192.168.0.100",
+        "model": "DenonX1400H",
+        "zones": 2
+        "zonenames": [
+          "Den",
+          "Patio"
+        ]
+      },
+      {
+        "name": "KitchenAVR",
+        "ip": "192.168.0.101",
+        "model": "DenonX4400H"
+      }
+    ]
+  }
+]
 
 ```
 
