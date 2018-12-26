@@ -16,6 +16,9 @@
     "node": ">=8.9.3",
     "homebridge": ">=0.4.36"
   },
+  "dependencies": {
+    "throttled-queue": ">=1.0.5"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/jdtsmith/homebridge-denonmarantzavr.git"
@@ -24,5 +27,3 @@
     "url": "http://github.com/jdtsmith/homebridge-denonmarantzavr/issues"
   }
 }
-
-

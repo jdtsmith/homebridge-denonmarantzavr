@@ -1,5 +1,7 @@
 'use strict';
 var net = require('net');
+var throttledQueue=require('throttled-queue');
+
 const PORT = 23;
 
 let Characteristic, Service;
@@ -11,6 +13,7 @@ class AVRAccessory {
     this.log = log;
     this.name = config.name;
 
+
     config.zones=config.zones || 1;
     if(!config.ip) {
       this.log.warn(this.name+': no ip configured for connection, aborting.');
@@ -19,6 +22,8 @@ class AVRAccessory {
     config.model=config.model || 'DENON-LIKE AVR';
     this.config = config;
     this._services = this.createServices();
+
+    this.throttle=throttledQueue(1,200); // at most 1 request per 200ms
 
     // Initiate the connection
     var client = new net.Socket();
@@ -102,14 +107,18 @@ class AVRAccessory {
       callback(new Error(`No such zone: ${zone}`));
       return;
     } 
-    this.client.write(zone + (status?'ON':'OFF') + '\r');
+    this.write(zone + (status?'ON':'OFF'));
     callback(null);
   }
 
   queryZone(zone) {
-    this.client.write(zone + '?\r');
+    this.write(zone + '?');
   }
 
+  write(msg) {
+    this.throttle(() => this.client.write(msg+'\r'));
+  }
+  
   updateZone(zone,status) {
     if(this.switches[zone]) {
       this.switches[zone].status = status=='ON';
