@@ -5,7 +5,7 @@ const platformName = 'homebridge-denonmarantzavr';
 const platformPrettyName = 'DenonMarantzAVR';
 
 module.exports = (homebridge) => {
-  homebridge.registerPlatform(platformName, platformPrettyName, AVRPlatform, true);
+  homebridge.registerPlatform(platformName, platformPrettyName, AVRPlatform);
 };
 
 const AVRPlatform = class {
