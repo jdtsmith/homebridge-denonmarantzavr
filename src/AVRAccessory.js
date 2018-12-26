@@ -25,15 +25,15 @@ class AVRAccessory {
     client.setKeepAlive(true);
     client.connect(PORT,config.ip)
 
-    client.on('connect', () => {
+    client.on('error',error => {
+      this.log.warn(`${this.name} - Error connecting to ${config.ip}: `,error);
+    });
+    
+    client.on('ready', () => {	// query state of all zones
       if(this.switches) 
 	Object.keys(this.switches).forEach(zone => this.queryZone(zone));
     });
-    
-    client.on('error',error => {
-      this.log.warn(`${thisname} - Error connecting to ${config.ip}: `,error);
-    });
-    
+
     client.on('data', data => {
       data=data.toString().trim();
       var match=data.match(/^(Z[M234])(ON|OFF)/);
