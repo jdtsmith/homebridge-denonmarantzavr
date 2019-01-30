@@ -23,18 +23,25 @@ class AVRAccessory {
     this.config = config;
     this._services = this.createServices();
 
-    this.throttle=throttledQueue(1,200); // at most 1 request per 200ms
-
+    this.throttle=throttledQueue(1,150); // space requests by 150ms
+    
     // Initiate the connection
-    var client = new net.Socket();
+    this.connect()
+  }
+
+  connect() {
+    var client=new net.Socket();
     client.setKeepAlive(true);
-    client.connect(PORT,config.ip)
+    client.connect(PORT,this.config.ip)
 
     client.on('error',error => {
-      this.log.warn(`${this.name} - Error connecting to ${config.ip}: `,error);
+      this.log.warn(`${this.name} - Error connecting to ${this.config.ip}: `,error);
+      this.log.warn(`${this.name} - Reattempting connection in 5s`);
+      setTimeout(() => this.connect(),5000);
     });
     
     client.on('ready', () => {	// query state of all zones
+      this.log(`${this.name} - Connected`);
       if(this.switches) 
 	Object.keys(this.switches).forEach(zone => this.queryZone(zone));
     });
@@ -43,7 +50,7 @@ class AVRAccessory {
       data=data.toString().trim();
       var match=data.match(/^(Z[M234])(ON|OFF)/);
       if (match && match.length>1) {
-	this.log(this.name+' - Status: ',data);
+	this.log(`${this.name} - Status: `,data);
 	this.updateZone(match[1],match[2]);
       } else if (data=='PWSTANDBY') {
 	this.log(this.name+' - Standing-by all Zones');
