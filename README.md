@@ -41,14 +41,14 @@ An example platform configuration stanza:
 where:
 
 - `name`: The name of the AVR to control.
-- `ip`: Its (fixed) IP address (try configuring in your router).
+- `ip`: Its (fixed) IP address (try configuring this in your router).
 - `model`  (Optional): Model name (defaults to "DENON-LIKE AVR").
 - `zones` (Optional): The number of zones to create HomeKit switches for.  Defaults to 1 (main zone only).  A maximum of 4 zones is supported (depending on AVR model). 
-- `zonenames` (Optional): Names to give the zones, in order (main, Zone 2, Zone 3,...).  If not passed Defaults to `name`, `name(Z2)`, etc.
+- `zonenames` (Optional): Names to give the zones, in order (main, Zone 2, Zone 3,...).  If not passed, defaults to `name`, `name(Z2)`, etc.
 
 
 ## How it works
-This plugin works by opening a persistent socket connection to port 23 (aka telnet port) on the AVR.  Since any external changes to state will be reported over this connection, no polling is required.  This makes status updates nearly instantaneous compared to other similar plugins.
+This plugin works by opening a persistent socket connection to port 23 (aka telnet port) on the AVR.  Since any external changes to state will be reported over this connection, no polling is required.  This makes status updates nearly instantaneous compared to other similar plugins.  If the connection goes down (e.g. during a network failure), it will attempt to reconnect.  
 
 ## Contributions
 
@@ -62,14 +62,14 @@ I'll accept pull requests for enhancements, additional commands etc.  A very use
 
 Some items TBD:
 
-- Add (optional) support for multi-zone volume control (trivial command-wise, but the `Speaker` accessory is not supported in Home, so that requires lightbulb or fan psuedo-accessory or the use of 3rd party HomeKit apps). 
-- Add other commands, e.g. for changing inputs, surround mode, etc. 
+- Add (optional) support for multi-zone volume control.  Trivial command-wise, but the `Speaker` accessory is not (yet?) supported in Home, so that requires lightbulb or fan psuedo-accessory or the use of 3rd party HomeKit apps. 
+- Map other control commands to HomeKit, e.g. changing inputs, surround mode, etc. 
 
 ## License
 
 MIT License
 
-Copyright (c) 2018 J.D. Smith
+Copyright (c) 2018-2019 J.D. Smith
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
