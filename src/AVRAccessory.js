@@ -104,7 +104,16 @@ class AVRAccessory {
   getStatus(zone,callback) {
     if(!this.switches[zone]) {
       callback(new Error(`No such zone: ${zone}`));
-    } 
+    }
+    var date=new Date();
+    if(zone in this.getCalled) {
+      if((date-this.getCalled[zone]) > 10*60*1e3) { // more than 10m elapsed, recheck
+	queryZone(zone)
+	this.getCalled[zone]=date
+      }
+    } else {
+      this.getCalled[zone]=date
+    }
     callback(null,this.switches[zone].status);
   }
 
