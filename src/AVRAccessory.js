@@ -59,16 +59,15 @@ class AVRAccessory {
     });
     this.client=client;
   }
-
+  
   getServices() {
     return this._services;
   }
 
   createServices() {
-    return [
-      this.getSwitchServices(),
-      this.getAccessoryInformationService()
-    ].flat();
+    var services=this.getSwitchServices();
+    services.push(this.getAccessoryInformationService());
+    return services;
   }
 
   getAccessoryInformationService() {
