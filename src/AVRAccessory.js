@@ -24,6 +24,7 @@ class AVRAccessory {
     this._services = this.createServices();
 
     this.throttle=throttledQueue(1,150); // space requests by 150ms
+    this.lastGet={};
     
     // Initiate the connection
     this.connect()
@@ -106,13 +107,13 @@ class AVRAccessory {
       callback(new Error(`No such zone: ${zone}`));
     }
     var date=new Date();
-    if(zone in this.getCalled) {
-      if((date-this.getCalled[zone]) > 10*60*1e3) { // more than 10m elapsed, recheck
+    if(zone in this.lastGet) {
+      if((date-this.lastGet[zone]) > 10*60*1e3) { // more than 10m elapsed, recheck
 	queryZone(zone)
-	this.getCalled[zone]=date
+	this.lastGet[zone]=date
       }
     } else {
-      this.getCalled[zone]=date
+      this.lastGet[zone]=date
     }
     callback(null,this.switches[zone].status);
   }
