@@ -109,7 +109,7 @@ class AVRAccessory {
     var date=new Date();
     if(zone in this.lastGet) {
       if((date-this.lastGet[zone]) > 10*60*1e3) { // more than 10m elapsed, recheck
-	queryZone(zone)
+	this.queryZone(zone)
 	this.lastGet[zone]=date
       }
     } else {
