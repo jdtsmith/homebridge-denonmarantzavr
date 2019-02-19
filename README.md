@@ -1,3 +1,4 @@
+[![npm version](https://badge.fury.io/js/homebridge-denonmarantzavr.svg)](https://badge.fury.io/js/homebridge-denonmarantzavr)
 # homebridge-denonmarantzavr
 
 A homebridge plugin for Denon and Marantz AVRs, to control power in main and secondary zones.
