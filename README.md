@@ -23,7 +23,7 @@ An example platform configuration stanza:
         "ip": "192.168.0.100",
         "model": "DenonX1400H",
         "zones": 2,
-		"speaker": false,
+        "speaker": false,
         "zonenames": [
           "Den",
           "Patio"
