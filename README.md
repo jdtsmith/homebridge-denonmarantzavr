@@ -23,6 +23,7 @@ An example platform configuration stanza:
         "ip": "192.168.0.100",
         "model": "DenonX1400H",
         "zones": 2,
+		"speaker": false,
         "zonenames": [
           "Den",
           "Patio"
@@ -46,10 +47,11 @@ where:
 - `model`  (Optional): Model name (defaults to "DENON-LIKE AVR").
 - `zones` (Optional): The number of zones to create HomeKit switches for.  Defaults to 1 (main zone only).  A maximum of 4 zones is supported (depending on AVR model). 
 - `zonenames` (Optional): Names to give the zones, in order (main, Zone 2, Zone 3,...).  If not passed, defaults to `name`, `name(Z2)`, etc.
+- `speaker`  (Optional): Whether to use a _speaker_ service instead of a switch.  Offers volume control, but not yet supported by the Home App (works in Eve). Defaults to false (i.e. make switches instead). 
 
 
 ## How it works
-This plugin works by opening a persistent socket connection to port 23 (aka telnet port) on the AVR.  Since any external changes to state will be reported over this connection, no polling is required.  This makes status updates nearly instantaneous compared to other similar plugins.  If the connection goes down (e.g. during a network failure), it will attempt to reconnect.  
+This plugin works by opening a persistent socket connection to port 23 (aka telnet port) on the AVR.  Since any external changes to state will be reported over this connection, no polling is required.  This makes status updates nearly instantaneous compared to other similar plugins.  If the connection goes down (e.g. during a network failure), it will attempt to reconnect.
 
 ## Contributions
 
@@ -63,7 +65,7 @@ I'll accept pull requests for enhancements, additional commands etc.  A very use
 
 Some items TBD:
 
-- Add (optional) support for multi-zone volume control.  Trivial command-wise, but the `Speaker` accessory is not (yet?) supported in Home, so that requires lightbulb or fan psuedo-accessory or the use of 3rd party HomeKit apps. 
+- Add (optional) support for multi-zone volume control.  Trivial command-wise, but the `Speaker` accessory is not (yet?) supported in Home, so that requires lightbulb or fan psuedo-accessory or the use of 3rd party HomeKit apps.  Probably not worth implementing since Speaker works in apps like Eve.
 - Map other control commands to HomeKit, e.g. changing inputs, surround mode, etc. 
 
 ## License

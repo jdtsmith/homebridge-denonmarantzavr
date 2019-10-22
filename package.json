@@ -1,6 +1,6 @@
 {
   "name": "homebridge-denonmarantzavr",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "Homebridge plugin for Denon/Marantz AVRs",
   "main": "src/index.js",
   "keywords": [
@@ -17,7 +17,8 @@
     "homebridge": ">=0.4.36"
   },
   "dependencies": {
-    "throttled-queue": ">=1.0.5"
+    "throttled-queue": ">=1.0.5",
+    "debounce": ">=1.2.0"
   },
   "repository": {
     "type": "git",
